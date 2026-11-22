@@ -30,22 +30,17 @@ jobs:
 
       - name: Build debug APK
         run: |
-          if [ -f "./gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          elif [ -f "./android/gradlew" ]; then
-            cd android
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          else
-            echo "File gradlew tidak ditemukan. Isi folder repositori:"
-            ls -la
-            exit 1
+          if [ -f ".env.example" ] && [ ! -f ".env" ]; then
+            cp .env.example .env
           fi
+          if [ ! -f "./gradlew" ]; then
+            gradle wrapper
+          fi
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: "**/build/outputs/apk/debug/*.apk"
-
+          path: app/build/outputs/apk/debug/*.apk

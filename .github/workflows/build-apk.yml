@@ -30,9 +30,7 @@ jobs:
 
       - name: Build debug APK
         run: |
-          if [ -f ".env.example" ] && [ ! -f ".env" ]; then
-            cp .env.example .env
-          fi
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
           if [ ! -f "./gradlew" ]; then
             gradle wrapper
           fi
